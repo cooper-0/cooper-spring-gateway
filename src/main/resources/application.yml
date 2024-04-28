@@ -22,3 +22,11 @@ spring:
           uri: lb://COOPER-MEDIA
           predicates:
             - Path=/cooper-media/**
+        - id: cooper-docs
+          uri: lb://COOPER-DOCS
+          predicates:
+            - Path=/cooper-docs/**
+        - id: cooper-chat
+          uri: lb://COOPER-CHAT
+          predicates:
+            - Path=/cooper-chat/**
