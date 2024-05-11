@@ -8,6 +8,10 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
+jwt:
+  secret: dfklWWHObhUWHEJKHhkjHWKXEHWUIEHXWUIWjhkjHJKWHEJWKeKEhjhKJHEWlhjkjklewkjkljkljewqnnjkbctjkwbtek # 임시 토큰, 나중에 삭제
+  expiration_time: 86400000
+
 spring:
   application:
     name: cooper-gateway
@@ -17,16 +21,41 @@ spring:
         - id: cooper-user
           uri: lb://COOPER-USER
           predicates:
+            - Path=/cooper-user/signup
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+#            - JwtFilter
+        - id: cooper-user
+          uri: lb://COOPER-USER
+          predicates:
+            - Path=/cooper-user/signin
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+#            - JwtFilter
+        - id: cooper-user
+          uri: lb://COOPER-USER
+          predicates:
             - Path=/cooper-user/**
+            - Method=GET
+          filters:
+            - JwtFilter
         - id: cooper-media
           uri: lb://COOPER-MEDIA
           predicates:
             - Path=/cooper-media/**
+          filters:
+            - JwtFilter
         - id: cooper-docs
           uri: lb://COOPER-DOCS
           predicates:
             - Path=/cooper-docs/**
+          filters:
+            - JwtFilter
         - id: cooper-chat
           uri: lb://COOPER-CHAT
           predicates:
             - Path=/cooper-chat/**
+          filters:
+            - JwtFilter
