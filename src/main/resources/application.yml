@@ -21,16 +21,7 @@ spring:
         - id: cooper-user
           uri: lb://COOPER-USER
           predicates:
-            - Path=/cooper-user/signup
-            - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-#            - JwtFilter
-        - id: cooper-user
-          uri: lb://COOPER-USER
-          predicates:
-            - Path=/cooper-user/signin
-            - Method=POST
+            - Path=/cooper-user/signup, /cooper-user/signin # 제외 목록
           filters:
             - RemoveRequestHeader=Cookie
 #            - JwtFilter
