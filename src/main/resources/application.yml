@@ -24,7 +24,7 @@ spring:
           '[/**]':
             allowedOrigins:
               - 'http://localhost:3000'
-              - 'http://221.144.190.76:3000'
+              - 'http://221.144.190.76:3000' # 테스트 주소
             allow-credentials: true
             allowedHeaders: '*'
             allowedMethods:
