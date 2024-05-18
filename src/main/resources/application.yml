@@ -17,32 +17,56 @@ spring:
     name: cooper-gateway
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - 'http://localhost:3000'
+              - 'http://221.144.190.76:3000'
+            allow-credentials: true
+            allowedHeaders: '*'
+            allowedMethods:
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - OPTIONS
+
       routes:
+# USER
         - id: cooper-user
           uri: lb://COOPER-USER
           predicates:
-            - Path=/cooper-user/signup, /cooper-user/signin # 제외 목록
+            - Path=/cooper-user/signup, /cooper-user/signin # JwtFilter 제외 목록
           filters:
             - RemoveRequestHeader=Cookie
-#            - JwtFilter
         - id: cooper-user
           uri: lb://COOPER-USER
           predicates:
             - Path=/cooper-user/**
           filters:
             - JwtFilter
-        - id: cooper-media
+# MEDIA
+        - id: cooper-media-websocket
           uri: lb://COOPER-MEDIA
           predicates:
-            - Path=/cooper-media/**
+              - Path=/signaling/** # WebSocket 엔드포인트 패턴
+        - id: cooper-media-restapi
+          uri: lb://COOPER-MEDIA
+          predicates:
+            - Path=/cooper-media/** # REST API 엔드포인트 패턴
           filters:
             - JwtFilter
+# DOCS
         - id: cooper-docs
           uri: lb://COOPER-DOCS
           predicates:
-            - Path=/cooper-docs/**
+            - Path=/cooper-docs/**ㅋ
           filters:
             - JwtFilter
+# CHAT
         - id: cooper-chat
           uri: lb://COOPER-CHAT
           predicates:
