@@ -24,6 +24,7 @@ spring:
           '[/**]':
             allowedOrigins:
               - 'http://localhost:3000'
+              - 'http://localhost:3030'
               - 'http://221.144.190.76:3000' # 테스트 주소
             allow-credentials: true
             allowedHeaders: '*'
@@ -60,12 +61,16 @@ spring:
           filters:
             - JwtFilter
 # DOCS
-        - id: cooper-docs
+        - id: cooper-docs-websocket
           uri: lb://COOPER-DOCS
           predicates:
-            - Path=/cooper-docs/**ㅋ
-          filters:
-            - JwtFilter
+            - Path=/ws/workspace/** # WebSocket 엔드포인트 패턴
+        - id: cooper-docs-restapi
+          uri: lb://COOPER-DOCS
+          predicates:
+            - Path=/cooper-docs/**
+#          filters:
+#            - JwtFilter
 # CHAT
         - id: cooper-chat
           uri: lb://COOPER-CHAT
