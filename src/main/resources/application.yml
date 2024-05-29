@@ -34,16 +34,17 @@ spring:
               - POST
               - DELETE
               - OPTIONS
+              - PATCH
 
       routes:
 # USER
-        - id: cooper-user
+        - id: cooper-user-signin
           uri: lb://COOPER-USER
           predicates:
             - Path=/cooper-user/signup, /cooper-user/signin # JwtFilter 제외 목록
           filters:
             - RemoveRequestHeader=Cookie
-        - id: cooper-user
+        - id: cooper-user-default
           uri: lb://COOPER-USER
           predicates:
             - Path=/cooper-user/**
